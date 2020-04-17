@@ -14,17 +14,29 @@
           <q-btn outline @click="goProduction" color="blue" label="Производство" />
           <q-btn outline @click="goTransport" color="blue" label="Транспорт" />
         </q-btn-group>
-        <q-page-container>
-          <router-view />
-        </q-page-container>
       </div>
+        <div style="display: flex">
+          <ServerStatus></ServerStatus>
+          <div style="padding: 16px;display: flex;
+               flex-direction: column;
+               align-items: center;">
+            <q-page-container style="padding-top: 10px">
+              <router-view />
+            </q-page-container>
+          </div>
+        </div>
     </div>
   </q-page>
 </template>
 
 <script>
+import ServerStatus from 'components/ServerStatus'
+
 export default {
   name: 'Module',
+  components: {
+    ServerStatus
+  },
   methods: {
     goSmartHome () {
       this.$router.push('/systems/smarthome')
@@ -37,6 +49,10 @@ export default {
     },
     goTransport () {
       this.$router.push('/systems/transport')
+    }
+  },
+  data () {
+    return {
     }
   }
 }
