@@ -8,52 +8,13 @@
         <q-separator />
         <q-card-actions vertical>
           <div style="display: flex">
-
-            <q-card class="my-card" style="min-width: 300px;padding-left: 20px">
-              <q-card-section>
-                <div class="text-h6">Воздух</div>
-              </q-card-section>
-              <q-separator />
-              <q-card-actions vertical>
-                <q-list bordered separator style="display: flex;
-                    flex-direction: column;
-                    align-items: center;">
-                  <q-item>
-                    <q-item-section style="font-size: 14px">Температура воздуха: {{temperatureAndHumidity.temperature}}</q-item-section>
-                  </q-item>
-                  <q-item>
-                    <q-item-section style="font-size: 14px">Влажность: {{temperatureAndHumidity.humidity}}</q-item-section>
-                  </q-item>
-                  <q-item>
-                    <q-item-section style="font-size: 14px">Подогрев: {{temperatureAndHumidity.heatingElement}}</q-item-section>
-                  </q-item>
-                  <q-item>
-                    <q-item-section style="font-size: 14px">Вентиляция: {{temperatureAndHumidity.fan}}</q-item-section>
-                  </q-item>
-                </q-list>
-              </q-card-actions>
-            </q-card>
-
-            <q-card class="my-card" style="min-width: 300px;padding-right: 20px">
-              <q-card-section>
-                <div class="text-h6">Почва</div>
-              </q-card-section>
-              <q-separator />
-              <q-card-actions vertical>
-                  <q-list bordered separator style="display: flex;
-                    flex-direction: column;
-                    align-items: center;">
-                    <q-item>
-                      <q-item-section style="font-size: 14px">Влажность почвы: {{soilMoisture.humidity}}</q-item-section>
-                    </q-item>
-                    <q-item>
-                      <q-item-section style="font-size: 14px">Вода: {{soilMoisture.water}}</q-item-section>
-                    </q-item>
-                  </q-list>
-              </q-card-actions>
-            </q-card>
+           <AgricultureSoilMoisture
+              v-bind:soilMoisture="soilMoisture"
+           ></AgricultureSoilMoisture>
+           <AgricultureTemperatureAndHumidity
+              v-bind:temperatureAndHumidity="temperatureAndHumidity"
+           ></AgricultureTemperatureAndHumidity>
           </div>
-
           <h4>остальное</h4>
         </q-card-actions>
       </q-card>
@@ -62,15 +23,25 @@
 </template>
 
 <script>
+import AgricultureSoilMoisture from 'components/AgricultureSoilMoisture'
+import AgricultureTemperatureAndHumidity from 'components/AgricultureTemperatureAndHumidity'
 export default {
   name: 'Agriculture',
+  components: {
+    AgricultureSoilMoisture,
+    AgricultureTemperatureAndHumidity
+  },
   data () {
     return {
       soilMoisture: {
+        id: '---',
+        time: '',
         humidity: '0.0',
         water: false
       },
       temperatureAndHumidity: {
+        id: '---',
+        time: '',
         temperature: '0.0',
         humidity: '0.0',
         heatingElement: false,
@@ -82,12 +53,8 @@ export default {
     fetch('http://localhost:9090/smartcity/agriculture/online')
       .then(response => response.json())
       .then(json => {
-        this.soilMoisture.humidity = json.soilMoisture.humidity
-        this.soilMoisture.water = json.soilMoisture.water
-        this.temperatureAndHumidity.temperature = json.temperatureAndHumidity.temperature
-        this.temperatureAndHumidity.humidity = json.temperatureAndHumidity.humidity
-        this.temperatureAndHumidity.heatingElement = json.temperatureAndHumidity.heatingElement
-        this.temperatureAndHumidity.fan = json.temperatureAndHumidity.fan
+        this.soilMoisture = json.soilMoisture
+        this.temperatureAndHumidity = json.temperatureAndHumidity
       })
   }
 }
