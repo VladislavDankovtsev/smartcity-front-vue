@@ -38,13 +38,38 @@ export default {
     }
   },
   mounted () {
-    fetch('http://localhost:9090/smartcity/production/online')
-      .then(response => response.json())
-      .then(json => {
-        this.status = json.status
-        this.manipulator1 = json.manipulator1
-        this.manipulator2 = json.manipulator2
-      })
+    this.startTimer()
+  },
+  beforeDestroy () {
+    this.stopTimer()
+  },
+  methods: {
+    loadData () {
+      fetch('http://localhost:9090/smartcity/production/online')
+        .then(response => response.json())
+        .then(json => {
+          this.status = json.status
+          this.manipulator1 = json.manipulator1
+          this.manipulator2 = json.manipulator2
+        })
+        // eslint-disable-next-line handle-callback-err
+        .catch((json) => {
+          this.status = '---'
+          this.manipulator1 = 0
+          this.manipulator2 = 0
+        })
+    },
+    stopTimer () {
+      if (this.interval) {
+        window.clearInterval(this.interval)
+      }
+    },
+    startTimer () {
+      this.stopTimer()
+      this.interval = window.setInterval(() => {
+        this.loadData()
+      }, 10000)
+    }
   }
 }
 </script>

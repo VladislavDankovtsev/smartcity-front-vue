@@ -50,12 +50,43 @@ export default {
     }
   },
   mounted () {
-    fetch('http://localhost:9090/smartcity/agriculture/online')
-      .then(response => response.json())
-      .then(json => {
-        this.soilMoisture = json.soilMoisture
-        this.temperatureAndHumidity = json.temperatureAndHumidity
-      })
+    this.startTimer()
+  },
+  beforeDestroy () {
+    this.stopTimer()
+  },
+  methods: {
+    loadData () {
+      fetch('http://localhost:9090/smartcity/agriculture/online')
+        .then(response => response.json())
+        .then(json => {
+          this.soilMoisture = json.soilMoisture
+          this.temperatureAndHumidity = json.temperatureAndHumidity
+        })
+        .catch((json) => {
+          this.soilMoisture.id = '---'
+          this.soilMoisture.time = '---'
+          this.soilMoisture.water = false
+          this.soilMoisture.humidity = '0.0'
+          this.temperatureAndHumidity.id = '---'
+          this.temperatureAndHumidity.fan = false
+          this.temperatureAndHumidity.heatingElement = true
+          this.temperatureAndHumidity.humidity = '0.0'
+          this.temperatureAndHumidity.temperature = '0.0'
+          this.temperatureAndHumidity.time = '---'
+        })
+    },
+    stopTimer () {
+      if (this.interval) {
+        window.clearInterval(this.interval)
+      }
+    },
+    startTimer () {
+      this.stopTimer()
+      this.interval = window.setInterval(() => {
+        this.loadData()
+      }, 10000)
+    }
   }
 }
 </script>

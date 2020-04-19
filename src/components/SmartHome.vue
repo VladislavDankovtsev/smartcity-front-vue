@@ -47,39 +47,76 @@ export default {
     return {
       elevator: {
         id: '---',
-        time: '2020-04-17T16:51:40.743626',
+        time: '---',
         place_arrival: '---',
         place_department: '---'
       },
       climateControl: {
         id: '---',
-        time: '2020-04-17T16:51:40.743626',
+        time: '---',
         temperatureIn: '0.0',
         temperatureOut: '0.0'
       },
       lighting: {
         id: '---',
-        time: '2020-04-17T16:51:40.743626',
+        time: '---',
         system_status: '---',
         signal_source: '---'
       },
       security: {
         id: '---',
-        time: '2020-04-17T16:51:40.743626',
+        time: '---',
         id_personal: 'unknow',
         door_status: '---'
       }
     }
   },
   mounted () {
-    fetch('http://localhost:9090/smartcity/smarthome/online')
-      .then(response => response.json())
-      .then(json => {
-        this.elevator = json.elevator
-        this.climateControl = json.climateControl
-        this.lighting = json.lighting
-        this.security = json.security
-      })
+    this.startTimer()
+  },
+  beforeDestroy () {
+    this.stopTimer()
+  },
+  methods: {
+    loadData () {
+      fetch('http://localhost:9090/smartcity/smarthome/online')
+        .then(response => response.json())
+        .then(json => {
+          this.elevator = json.elevator
+          this.climateControl = json.climateControl
+          this.lighting = json.lighting
+          this.security = json.security
+        })
+        .catch((json) => {
+          this.elevator.id = '---'
+          this.elevator.time = '---'
+          this.elevator.place_arrival = '---'
+          this.elevator.place_department = '---'
+          this.climateControl.id = '---'
+          this.climateControl.time = '---'
+          this.climateControl.temperatureIn = '---'
+          this.climateControl.temperatureOut = '---'
+          this.lighting.id = '---'
+          this.lighting.time = '---'
+          this.lighting.signal_source = '---'
+          this.lighting.system_status = '---'
+          this.security.id = '---'
+          this.security.time = '---'
+          this.security.door_status = '---'
+          this.security.id_personal = 'unknow'
+        })
+    },
+    stopTimer () {
+      if (this.interval) {
+        window.clearInterval(this.interval)
+      }
+    },
+    startTimer () {
+      this.stopTimer()
+      this.interval = window.setInterval(() => {
+        this.loadData()
+      }, 10000)
+    }
   }
 }
 </script>

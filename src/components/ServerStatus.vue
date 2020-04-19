@@ -44,11 +44,30 @@ export default {
     }
   },
   mounted () {
-    fetch('http://localhost:9090/smartcity/status')
-      .then(response => response.json())
-      .then(json => {
-        this.servers = json
-      })
+    this.startTimer()
+  },
+  beforeDestroy () {
+    this.stopTimer()
+  },
+  methods: {
+    loadData () {
+      fetch('http://localhost:9090/smartcity/status')
+        .then(response => response.json())
+        .then(json => {
+          this.servers = json
+        })
+    },
+    stopTimer () {
+      if (this.interval) {
+        window.clearInterval(this.interval)
+      }
+    },
+    startTimer () {
+      this.stopTimer()
+      this.interval = window.setInterval(() => {
+        this.loadData()
+      }, 5000)
+    }
   }
 }
 </script>

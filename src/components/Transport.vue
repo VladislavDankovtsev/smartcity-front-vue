@@ -42,14 +42,39 @@ export default {
     }
   },
   mounted () {
-    fetch('http://localhost:9090/smartcity/transport/online')
-      .then(response => response.json())
-      .then(json => {
-        this.status = json.status
-        this.x = json.x
-        this.y = json.y
-        this.typeCargo = json.typeCargo
-      })
+    this.startTimer()
+  },
+  beforeDestroy () {
+    this.stopTimer()
+  },
+  methods: {
+    loadData () {
+      fetch('http://localhost:9090/smartcity/transport/online')
+        .then(response => response.json())
+        .then(json => {
+          this.status = json.status
+          this.x = json.x
+          this.y = json.y
+          this.typeCargo = json.typeCargo
+        })
+        .catch((json) => {
+          this.status = '---'
+          this.x = 0
+          this.y = 0
+          this.typeCargo = '-'
+        })
+    },
+    stopTimer () {
+      if (this.interval) {
+        window.clearInterval(this.interval)
+      }
+    },
+    startTimer () {
+      this.stopTimer()
+      this.interval = window.setInterval(() => {
+        this.loadData()
+      }, 10000)
+    }
   }
 }
 </script>
