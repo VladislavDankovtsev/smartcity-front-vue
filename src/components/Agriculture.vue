@@ -15,7 +15,7 @@
               v-bind:temperatureAndHumidity="temperatureAndHumidity"
            ></AgricultureTemperatureAndHumidity>
           </div>
-          <h4>остальное</h4>
+          <AgricutureOther></AgricutureOther>
         </q-card-actions>
       </q-card>
     </div>
@@ -25,11 +25,13 @@
 <script>
 import AgricultureSoilMoisture from 'components/AgricultureSoilMoisture'
 import AgricultureTemperatureAndHumidity from 'components/AgricultureTemperatureAndHumidity'
+import AgricutureOther from 'components/AgricutureOther'
 export default {
   name: 'Agriculture',
   components: {
     AgricultureSoilMoisture,
-    AgricultureTemperatureAndHumidity
+    AgricultureTemperatureAndHumidity,
+    AgricutureOther
   },
   data () {
     return {

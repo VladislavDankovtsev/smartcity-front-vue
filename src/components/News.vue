@@ -5,7 +5,7 @@
            flex-direction: column;
            align-items: center;">
       <h8>
-        Настройки
+        Новости
       </h8>
     </div>
   </q-page>

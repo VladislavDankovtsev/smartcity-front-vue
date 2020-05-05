@@ -9,9 +9,8 @@
           <q-breadcrumbs active-color="white" style="font-size: 16px">
             <q-breadcrumbs-el @click="goHome" label="Главная" icon="home" />
             <q-breadcrumbs-el @click="goSystem" label="Системы умного города"  />
-            <q-breadcrumbs-el @click="goSetting" label="Настройки" />
+            <q-breadcrumbs-el @click="goSetting" label="Новости" />
             <q-breadcrumbs-el @click="goDocumentations" label="Документация" />
-            <q-breadcrumbs-el @click="goContacts" label="Конакты" />
           </q-breadcrumbs>
         </q-toolbar>
       </div>
@@ -34,11 +33,8 @@ export default {
     goSystem () {
       this.$router.push('/systems')
     },
-    goContacts () {
-      this.$router.push('/contacts')
-    },
     goSetting () {
-      this.$router.push('/setting')
+      this.$router.push('/news')
     },
     goDocumentations () {
       this.$router.push('/documents')

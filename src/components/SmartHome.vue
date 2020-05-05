@@ -23,7 +23,12 @@
               v-bind:security="security"
             ></SmartHomeSecurity>
           </div>
-          <h4>остальное</h4>
+          <SmartHomeOther></SmartHomeOther>
+          <div style="
+               align-items: center;">
+            <h7>тестовый график температур</h7>
+            <D3LineChart :config="chart_config" :datum="chart_data"></D3LineChart>
+          </div>
         </q-card-actions>
       </q-card>
     </div>
@@ -35,39 +40,107 @@ import SmartHomeSecurity from 'components/SmartHomeSecurity'
 import SmartHomeElevator from 'components/SmartHomeElevator'
 import SmartHomeLighting from 'components/SmartHomeLighting'
 import SmartHomeClimatControl from 'components/SmartHomeClimatControl'
+import SmartHomeOther from 'components/SmartHomeOther'
+import { D3LineChart } from 'vue-d3-charts'
+
 export default {
   name: 'SmartHome',
   components: {
     SmartHomeSecurity,
     SmartHomeElevator,
     SmartHomeLighting,
-    SmartHomeClimatControl
+    SmartHomeClimatControl,
+    SmartHomeOther,
+    D3LineChart
   },
   data () {
     return {
       elevator: {
         id: '---',
-        time: '---',
+        time: '2019-08-01T10:01:10',
         place_arrival: '---',
         place_department: '---'
       },
       climateControl: {
         id: '---',
-        time: '---',
+        time: '',
         temperatureIn: '0.0',
         temperatureOut: '0.0'
       },
       lighting: {
         id: '---',
-        time: '---',
+        time: '',
         system_status: '---',
         signal_source: '---'
       },
       security: {
         id: '---',
-        time: '---',
+        time: '',
         id_personal: 'unknow',
         door_status: '---'
+      },
+      chart_data: [{
+        time: '2019-08-01T10:01:10',
+        tempIn: 30,
+        tempOut: 20
+      }, {
+        time: '2019-08-01T10:01:20',
+        tempIn: 32,
+        tempOut: 12
+      }, {
+        time: '2019-08-01T10:01:30',
+        tempIn: 37,
+        tempOut: 10
+      }, {
+        time: '2019-08-01T10:02:10',
+        tempIn: 17,
+        tempOut: 26
+      }, {
+        time: '2019-08-01T10:03:15',
+        tempIn: 7,
+        tempOut: 0
+      }],
+      chart_config: {
+        date: {
+          key: 'time',
+          inputFormat: '%Y-%m-%dT%H:%M:%S',
+          outputFormat: '%H:%M'
+        },
+        values: ['tempIn', 'tempOut'],
+        axis: {
+          yTitle: 'Градусы',
+          xTitle: 'время',
+          yFormat: '.0f',
+          xFormat: '%H:%M',
+          yTicks: 5,
+          xTicks: 4
+        },
+        color: {
+          key: false,
+          keys: false,
+          scheme: 'schemeCategory10',
+          current: 'red',
+          default: '#AAA',
+          axis: '#000'
+        },
+        curve: 'curveBasis',
+        margin: {
+          top: 20,
+          right: 20,
+          bottom: 20,
+          left: 40
+        },
+        points: {
+          visibleSize: 3,
+          hoverSize: 6
+        },
+        tooltip: {
+          labels: { label: ['tempIn', 'tempOut'] }
+        },
+        transition: {
+          duration: 350,
+          ease: 'easeQuadOut'
+        }
       }
     }
   },
@@ -83,25 +156,27 @@ export default {
         .then(response => response.json())
         .then(json => {
           this.elevator = json.elevator
+          // eslint-disable-next-line no-undef
+          this.elevator.time = datesetting(json.elevator.time)
           this.climateControl = json.climateControl
           this.lighting = json.lighting
           this.security = json.security
         })
         .catch((json) => {
           this.elevator.id = '---'
-          this.elevator.time = '---'
+          this.elevator.time = ''
           this.elevator.place_arrival = '---'
           this.elevator.place_department = '---'
           this.climateControl.id = '---'
-          this.climateControl.time = '---'
+          this.climateControl.time = ''
           this.climateControl.temperatureIn = '---'
           this.climateControl.temperatureOut = '---'
           this.lighting.id = '---'
-          this.lighting.time = '---'
+          this.lighting.time = ''
           this.lighting.signal_source = '---'
           this.lighting.system_status = '---'
           this.security.id = '---'
-          this.security.time = '---'
+          this.security.time = ''
           this.security.door_status = '---'
           this.security.id_personal = 'unknow'
         })
@@ -116,6 +191,18 @@ export default {
       this.interval = window.setInterval(() => {
         this.loadData()
       }, 10000)
+    }
+  },
+  computed: {
+    localeDate () {
+      // Конвертируем число в строку. Для этого существуют специальные методы
+      // toLocaleDateString() или toLocaleString() или toLocaleTimeString()
+      // Итоговая строка будет зависеть от локализации системы пользователя.
+      // Для русской локали это будет "01.02.2020",
+      // для американской "2/1/2020",
+      // для немецкой — "1.2.2020"
+      // Вы НЕ должны устанавливать формат даты самостоятельно
+      return (new Date(this.elevator.time)).toLocaleDateTimeString()
     }
   }
 }

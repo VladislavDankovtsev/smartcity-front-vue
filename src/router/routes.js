@@ -19,24 +19,17 @@ const routes = [
         ]
       },
       {
-        path: 'contacts',
-        component: () => import('components/Contact'),
+        path: 'news',
+        component: () => import('components/News'),
         meta: {
-          title: 'Контакты'
-        }
-      },
-      {
-        path: 'setting',
-        component: () => import('components/Setting'),
-        meta: {
-          title: 'Контакты'
+          title: 'Новости'
         }
       },
       {
         path: 'documents',
         component: () => import('components/Documentation'),
         meta: {
-          title: 'Контакты'
+          title: 'Документация'
         }
       }
     ]

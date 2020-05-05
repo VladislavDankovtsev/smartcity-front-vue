@@ -20,7 +20,7 @@
               <q-item-section style="font-size: 14px">Состояние манипулятора 2: {{manipulator2}}</q-item-section>
             </q-item>
           </q-list>
-          <h4>остальное</h4>
+          <ProductionOther></ProductionOther>
         </q-card-actions>
       </q-card>
     </div>
@@ -28,8 +28,12 @@
 </template>
 
 <script>
+import ProductionOther from 'components/ProductionOther'
 export default {
   name: 'Production',
+  components: {
+    ProductionOther
+  },
   data () {
     return {
       status: '---',

@@ -19,13 +19,13 @@ export default {
         {
           id: 1,
           ip: 'http://localhost:9081/agricalture/check',
-          name: 'Умный дом',
+          name: 'Сельcкое хозяйство',
           status: 'off'
         },
         {
           id: 2,
-          ip: 'http://localhost:9082/agricalture/check',
-          name: 'Сельcкое хозяйство',
+          ip: 'http://localhost:9082/smarthome/check',
+          name: 'умный дом',
           status: 'on'
         },
         {

@@ -27,7 +27,14 @@ export default {
   name: 'SmartHomeElevator',
   props: [
     'elevator'
-  ]
+  ],
+  methods: {
+    datesetting () {
+      // eslint-disable-next-line no-undef
+      const date = dayjs(this.elevator.time)
+      return date.format('YYYY-MM-DD HH:mm:ss')
+    }
+  }
 }
 </script>
 

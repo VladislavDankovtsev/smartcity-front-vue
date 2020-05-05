@@ -23,7 +23,7 @@
               <q-item-section style="font-size: 14px">Тип груза: {{typeCargo}}</q-item-section>
             </q-item>
           </q-list>
-          <h4>остальное</h4>
+          <TransportOther></TransportOther>
         </q-card-actions>
       </q-card>
     </div>
@@ -31,8 +31,13 @@
 </template>
 
 <script>
+import TransportOther from 'components/TransportOther'
+
 export default {
   name: 'Transport',
+  components: {
+    TransportOther
+  },
   data () {
     return {
       status: '---',
