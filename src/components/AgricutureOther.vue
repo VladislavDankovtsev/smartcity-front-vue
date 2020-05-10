@@ -50,19 +50,30 @@
             </q-input>
           </div>
         </div>
-        <div>
+        <div style="padding-bottom: 10px">
           <q-btn color="primary" label="Анализ" @click="analysis"/>
         </div>
+        <Loader v-if="loader"></Loader>
+        <AgricultureAnalise v-if="checkConnection" v-bind:agriculture="agriculture"></AgricultureAnalise>
       </q-card-actions>
     </q-card>
   </div>
 </template>
 
 <script>
+import AgricultureAnalise from 'components/AgricultureAnalise'
+import Loader from 'components/Loader'
+
 export default {
   name: 'AgricutureOther',
+  components: {
+    AgricultureAnalise,
+    Loader
+  },
   data () {
     return {
+      loader: false,
+      checkConnection: false,
       dateStart: '2020-03-01 15:44',
       dateEnd: '2020-04-03 17:44',
       sds: '',
@@ -85,9 +96,12 @@ export default {
         .then(json => {
           this.agriculture = json
           console.log('avgHumidityTH', this.agriculture)
+          this.checkConnection = true
         })
+      this.loader = false
     },
     analysis () {
+      this.loader = true
       var tzoffset = (new Date()).getTimezoneOffset() * 60000
       var sss = (new Date(this.dateStart))
       const ds = (new Date(sss - tzoffset))

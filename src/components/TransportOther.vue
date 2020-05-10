@@ -50,34 +50,45 @@
             </q-input>
           </div>
         </div>
-        <div>
+        <div style="padding-bottom: 10px">
           <q-btn color="primary" label="Анализ" @click="analysis"/>
         </div>
+        <Loader v-if="loader"></Loader>
+        <TransportAnalise v-if="checkConnection" v-bind:transport="transport"></TransportAnalise>
       </q-card-actions>
     </q-card>
   </div>
 </template>
 
 <script>
+import TransportAnalise from 'components/TransportAnalise'
+import Loader from 'components/Loader'
+
 export default {
   name: 'TransportOther',
+  components: {
+    TransportAnalise,
+    Loader
+  },
   data () {
     return {
       dateStart: '2020-03-01 15:44',
+      checkConnection: false,
+      loader: false,
       dateEnd: '2020-04-03 17:44',
       sds: '',
       sde: '',
       transport: {
-        t1: null,
-        t2: null,
-        t3: null,
-        t4: null,
-        t5: null,
-        t6: null,
-        t7: null,
-        t8: null,
-        t9: null,
-        t10: null,
+        g1: null,
+        g2: null,
+        g3: null,
+        g4: null,
+        g5: null,
+        g6: null,
+        g7: null,
+        g8: null,
+        g9: null,
+        g10: null,
         gOther: null,
         countlist: null
       }
@@ -90,9 +101,12 @@ export default {
         .then(json => {
           this.transport = json
           console.log('transport', this.transport)
+          this.checkConnection = true
         })
+      this.loader = false
     },
     analysis () {
+      this.loader = true
       var tzoffset = (new Date()).getTimezoneOffset() * 60000
       var sss = (new Date(this.dateStart))
       const ds = (new Date(sss - tzoffset))

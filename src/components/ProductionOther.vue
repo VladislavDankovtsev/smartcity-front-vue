@@ -50,21 +50,32 @@
             </q-input>
           </div>
         </div>
-        <div>
+        <div style="padding-bottom: 10px">
           <q-btn color="primary" label="Анализ" @click="analysis"/>
         </div>
+        <Loader  v-if="loader"></Loader>
+        <ProductionAnalise v-if="checkConnection" v-bind:production="production"></ProductionAnalise>
       </q-card-actions>
     </q-card>
   </div>
 </template>
 
 <script>
+import ProductionAnalise from 'components/ProductionAnalise'
+import Loader from 'components/Loader'
+
 export default {
-  name: 'productionOther',
+  name: 'ProductionOther',
+  components: {
+    ProductionAnalise,
+    Loader
+  },
   data () {
     return {
       dateStart: '2020-03-01 15:44',
       dateEnd: '2020-04-03 17:44',
+      loader: false,
+      checkConnection: false,
       sds: '',
       sde: '',
       production: {
@@ -80,9 +91,12 @@ export default {
         .then(json => {
           this.production = json
           console.log('production', this.production)
+          this.checkConnection = true
         })
+      this.loader = false
     },
     analysis () {
+      this.loader = true
       var tzoffset = (new Date()).getTimezoneOffset() * 60000
       var sss = (new Date(this.dateStart))
       const ds = (new Date(sss - tzoffset))
