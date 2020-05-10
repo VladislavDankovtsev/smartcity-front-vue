@@ -15,6 +15,7 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
     "dayjs": "^1.8.24",
+    "numeral": "^2.0.6",
     "quasar": "^1.0.0",
     "vue-d3-charts": "^0.2.8",
     "vue-i18n": "^8.0.0"

@@ -50,23 +50,33 @@
             </q-input>
           </div>
         </div>
-        <div>
+        <div style="padding-bottom: 10px">
           <q-btn color="primary" label="Анализ" @click="analysis"/>
         </div>
+        <Loader v-if="loader"></Loader>
+        <SmartHomeAnalise v-if="checkConnection" v-bind:smartHome="smartHome"></SmartHomeAnalise>
       </q-card-actions>
     </q-card>
   </div>
 </template>
 
 <script>
+import SmartHomeAnalise from 'components/SmartHomeAnalise'
+import Loader from 'components/Loader'
 export default {
   name: 'SmartHomeOther',
+  components: {
+    SmartHomeAnalise,
+    Loader
+  },
   data () {
     return {
       dateStart: '2020-03-01 15:44',
       dateEnd: '2020-04-03 17:44',
       sds: '',
       sde: '',
+      loader: false,
+      checkConnection: false,
       smartHome: {
         avgTempInCC: null,
         avgTempOutCC: null,
@@ -86,9 +96,12 @@ export default {
         .then(json => {
           this.smartHome = json
           console.log('smartHome', this.smartHome)
+          this.checkConnection = true
         })
+      this.loader = false
     },
     analysis () {
+      this.loader = true
       var tzoffset = (new Date()).getTimezoneOffset() * 60000
       var sss = (new Date(this.dateStart))
       const ds = (new Date(sss - tzoffset))
