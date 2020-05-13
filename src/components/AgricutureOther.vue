@@ -55,6 +55,7 @@
         </div>
         <Loader v-if="loader"></Loader>
         <AgricultureAnalise v-if="checkConnection" v-bind:agriculture="agriculture"></AgricultureAnalise>
+        <AgricultureGraphics v-if="checkConnectionAll" v-bind:agricultures="agricultures"></AgricultureGraphics>
       </q-card-actions>
     </q-card>
   </div>
@@ -63,15 +64,19 @@
 <script>
 import AgricultureAnalise from 'components/AgricultureAnalise'
 import Loader from 'components/Loader'
+import AgricultureGraphics from 'components/AgricultureGraphics'
 
 export default {
   name: 'AgricutureOther',
   components: {
     AgricultureAnalise,
-    Loader
+    Loader,
+    AgricultureGraphics
   },
   data () {
     return {
+      agricultures: [],
+      checkConnectionAll: false,
       loader: false,
       checkConnection: false,
       dateStart: '2020-03-01 15:44',
@@ -97,6 +102,16 @@ export default {
           this.agriculture = json
           console.log('avgHumidityTH', this.agriculture)
           this.checkConnection = true
+        })
+      this.loadDataAgriculture()
+    },
+    loadDataAgriculture () {
+      fetch('http://localhost:9090/smartcity/agriculture/history?dateFrom=' + this.sds + '&dateTo=' + this.sde)
+        .then(response => response.json())
+        .then(json => {
+          this.agricultures = json
+          console.log('smartHome', this.agricultures)
+          this.checkConnectionAll = true
         })
       this.loader = false
     },

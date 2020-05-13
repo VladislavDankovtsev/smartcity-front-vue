@@ -55,6 +55,7 @@
         </div>
         <Loader v-if="loader"></Loader>
         <SmartHomeAnalise v-if="checkConnection" v-bind:smartHome="smartHome"></SmartHomeAnalise>
+        <SmartHomeGraphics v-if="checkConnectionAll" v-bind:smartHomes="smartHomes"></SmartHomeGraphics>
       </q-card-actions>
     </q-card>
   </div>
@@ -63,20 +64,25 @@
 <script>
 import SmartHomeAnalise from 'components/SmartHomeAnalise'
 import Loader from 'components/Loader'
+import SmartHomeGraphics from 'components/SmartHomeGraphics'
+
 export default {
   name: 'SmartHomeOther',
   components: {
     SmartHomeAnalise,
-    Loader
+    Loader,
+    SmartHomeGraphics
   },
   data () {
     return {
+      smartHomes: [],
       dateStart: '2020-03-01 15:44',
       dateEnd: '2020-04-03 17:44',
       sds: '',
       sde: '',
       loader: false,
       checkConnection: false,
+      checkConnectionAll: false,
       smartHome: {
         avgTempInCC: null,
         avgTempOutCC: null,
@@ -97,6 +103,16 @@ export default {
           this.smartHome = json
           console.log('smartHome', this.smartHome)
           this.checkConnection = true
+        })
+      this.loadDataSmartHome()
+    },
+    loadDataSmartHome () {
+      fetch('http://localhost:9090/smartcity/smarthome/history?dateFrom=' + this.sds + '&dateTo=' + this.sde)
+        .then(response => response.json())
+        .then(json => {
+          this.smartHomes = json
+          console.log('smartHome', this.smartHomes)
+          this.checkConnectionAll = true
         })
       this.loader = false
     },
