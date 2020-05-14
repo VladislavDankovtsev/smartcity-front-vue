@@ -5,6 +5,10 @@ const routes = [
     component: () => import('layouts/Home.vue'),
     children: [
       { path: '', component: () => import('components/SmartCity') },
+      { path: 'smarthome', component: () => import('components/AboutSmartHome') },
+      { path: 'agriculture', component: () => import('components/AboutAgriculture') },
+      { path: 'production', component: () => import('components/AboutProduction') },
+      { path: 'transport', component: () => import('components/AboutTransport') },
       {
         path: 'systems',
         component: () => import('components/Module'),
