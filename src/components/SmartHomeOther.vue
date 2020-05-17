@@ -56,6 +56,10 @@
         <Loader v-if="loader"></Loader>
         <SmartHomeAnalise v-if="checkConnection" v-bind:smartHome="smartHome"></SmartHomeAnalise>
         <SmartHomeGraphics v-if="checkConnectionAll" v-bind:smartHomes="smartHomes"></SmartHomeGraphics>
+        <SmartHomePersons v-if="checkConnectionPersons" v-bind:persons="persons"
+                          v-bind:sds="sds"
+                          v-bind:sde="sde"
+        ></SmartHomePersons>
       </q-card-actions>
     </q-card>
   </div>
@@ -65,24 +69,28 @@
 import SmartHomeAnalise from 'components/SmartHomeAnalise'
 import Loader from 'components/Loader'
 import SmartHomeGraphics from 'components/SmartHomeGraphics'
+import SmartHomePersons from 'components/SmartHomePersons'
 
 export default {
   name: 'SmartHomeOther',
   components: {
     SmartHomeAnalise,
     Loader,
-    SmartHomeGraphics
+    SmartHomeGraphics,
+    SmartHomePersons
   },
   data () {
     return {
       smartHomes: [],
-      dateStart: '2020-03-01 15:44',
-      dateEnd: '2020-04-03 17:44',
+      persons: [],
+      dateStart: '2020-05-17 18:30',
+      dateEnd: '2020-05-17 18:45',
       sds: '',
       sde: '',
       loader: false,
       checkConnection: false,
       checkConnectionAll: false,
+      checkConnectionPersons: false,
       smartHome: {
         avgTempInCC: null,
         avgTempOutCC: null,
@@ -113,6 +121,16 @@ export default {
           this.smartHomes = json
           console.log('smartHome', this.smartHomes)
           this.checkConnectionAll = true
+        })
+      this.loadDataPersons()
+    },
+    loadDataPersons () {
+      fetch('http://localhost:9090/smartcity/smarthome/history/security?dateFrom=' + this.sds + '&dateTo=' + this.sde)
+        .then(response => response.json())
+        .then(json => {
+          this.persons = json
+          console.log('persons', this.persons)
+          this.checkConnectionPersons = true
         })
       this.loader = false
     },

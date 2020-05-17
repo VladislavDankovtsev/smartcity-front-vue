@@ -9,9 +9,6 @@
                     flex-direction: column;
                     align-items: center;">
         <q-item>
-          <q-item-section style="font-size: 14px">Время: {{security.time}}</q-item-section>
-        </q-item>
-        <q-item>
           <q-item-section style="font-size: 14px">ID личности: {{security.id_personal}}</q-item-section>
         </q-item>
         <q-item>

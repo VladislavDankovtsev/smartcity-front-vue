@@ -50,7 +50,7 @@ export default {
     return {
       elevator: {
         id: '---',
-        time: '2019-08-01T10:01:10',
+        time: '',
         place_arrival: '---',
         place_department: '---'
       },
@@ -69,7 +69,7 @@ export default {
       security: {
         id: '---',
         time: '',
-        id_personal: 'unknow',
+        id_personal: '---',
         door_status: '---'
       }
     }

@@ -9,9 +9,6 @@
                     flex-direction: column;
                     align-items: center;">
         <q-item>
-          <q-item-section style="font-size: 14px">Время: {{elevator.time}}</q-item-section>
-        </q-item>
-        <q-item>
           <q-item-section style="font-size: 14px">Место отправление: {{elevator.place_arrival}}</q-item-section>
         </q-item>
         <q-item>
@@ -27,14 +24,7 @@ export default {
   name: 'SmartHomeElevator',
   props: [
     'elevator'
-  ],
-  methods: {
-    datesetting () {
-      // eslint-disable-next-line no-undef
-      const date = dayjs(this.elevator.time)
-      return date.format('YYYY-MM-DD HH:mm:ss')
-    }
-  }
+  ]
 }
 </script>
 

@@ -79,8 +79,8 @@ export default {
       checkConnectionAll: false,
       loader: false,
       checkConnection: false,
-      dateStart: '2020-03-01 15:44',
-      dateEnd: '2020-04-03 17:44',
+      dateStart: '2020-05-17 18:30',
+      dateEnd: '2020-05-17 18:45',
       sds: '',
       sde: '',
       agriculture: {
